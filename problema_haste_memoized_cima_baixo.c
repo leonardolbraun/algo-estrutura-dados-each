@@ -17,9 +17,9 @@ double memoized_cut_rod_aux(double *preco, int haste, double *r) {
         q = 0;
     } else {
         q = -INFINITY;
-        for (size_t i = 1; i < haste; i++)
+        for (size_t i = 1; i <= haste; i++)
         {
-            q = max(q,preco[i] + memoized_cut_rod_aux(preco - 1,haste - i,r));
+            q = max(q,preco[i-1] + memoized_cut_rod_aux(preco,haste - i,r));
         }
         r[haste] = q;
     }
@@ -31,7 +31,7 @@ double memoized_cut_rod(double *preco, int haste) {
     
     double r[haste + 1];  
     
-    for (size_t i = 0; i < haste; i++)
+    for (size_t i = 0; i <= haste; i++)
     {
         r[i] = -INFINITY;
     }
