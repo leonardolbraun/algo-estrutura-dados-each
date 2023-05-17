@@ -20,6 +20,7 @@ double memoized_cut_rod_aux(double *preco, int haste, double *r) {
         for (size_t i = 1; i <= haste; i++)
         {
             q = max(q,preco[i-1] + memoized_cut_rod_aux(preco,haste - i,r));
+            printf("%.2f,",r[i]);
         }
         r[haste] = q;
     }
@@ -35,11 +36,7 @@ double memoized_cut_rod(double *preco, int haste) {
     {
         r[i] = -INFINITY;
     }
-return memoized_cut_rod_aux(preco, haste, r);
-
 }
-
-
 
 int main() {
     double preco[] = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};

@@ -9,7 +9,7 @@ int buscaNumero(int *A){
 
 int main(){
 
-    
+    int A[10] = {}
 
 
     return 0;
