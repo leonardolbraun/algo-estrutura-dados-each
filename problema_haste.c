@@ -36,11 +36,11 @@ void imprimir_arvore_recursiva(double *preco, int haste, int nivel) {
 
 int main() {
     double preco[] = {1, 5, 8, 9, 10, 17, 17, 20, 24, 30};
-    int haste = 10;
+    int haste = 4;
     printf("Receita (r): %.2f\n", cut_rod(preco, haste));
     
-    // printf("Árvore Recursiva:\n");
-    // imprimir_arvore_recursiva(preco, haste, 0);
+    printf("Árvore Recursiva:\n");
+    imprimir_arvore_recursiva(preco, haste, 0);
     
     return 0;
 }

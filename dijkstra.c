@@ -3,45 +3,51 @@
 #include <math.h>
 #include <limits.h>
 
-int pertence(int * vec, int n, int x) {
- int j;
+int pertence(int * vec, int n, int x) { // recebe o conjunto de vértices, o número de vértices e um determinado vértice
+ int j; //variável auxiliar
 
- for(j = 0; j < n; ++j)
-   if(vec[j] == x)
+ for(j = 0; j < n; ++j) //percorre o número de vértices 
+   if(vec[j] == x) // esse if irá verificar se o determinado vértice pertence ao conjunto de vértices
      {
        return 1;
      }
  return 0;
 }
 
-int remove_vertice(int * vec, int n, int x) {
- int i,j;
+int remove_vertice(int * vec, int n, int x) { // recebe o conjunto de vértices, os vértices e o vértice com menor distância
+ int i,j; //variáveis auxiliares
  i = 0;
  for(j = 0; j < n; ++j)
-   if(vec[j] != x)
+   if(vec[j] != x) // se o vértice do conjunto de vetores é diferente do vértice com a menor distância
      {
-       vec[i] = vec[j];
-       ++i;
+       vec[i] = vec[j]; // constrói um novo conjunto de vértices retirando o vértice com menor distância (x)
+       ++i; //incrementa i
      }
- return i;
+ return i; //retorna o novo tamanho do conjunto de vértices sem o vértice com a menor distância (x)
 }
 
-int min_vertice_dist(int * d, int * q, int n){
-  int i;
-  int min = INT_MAX;
-  int vmin = 0;
+int min_vertice_dist(int * d, int * q, int n){ // recebe as distancias de dist(v), conjunto de vértices q, e o número de vértices
+  int i; // variável auxiliar
+  int min = INT_MAX; // variável recenbe infinito
+  int vmin = 0; // 
 
   for (i = 0; i < n; ++i)
-    if(d[q[i]] < min)
+    if(d[q[i]] < min) //se a distancia (d) do conjunto de vértices (q) vértice (i) for menor que infinito (min)
         {
-          min = d[q[i]];
-          vmin = q[i];
+          min = d[q[i]]; // min recebe a menor distancia entre os vértices disponíveis
+          vmin = q[i]; // vmin recebe o vértice com menor distância
+                      // importante destacar aqui que esse loop precisa atualizar a cada iteração
+                      // o min vmin, para que assim encontre o vertice seguindo a estratégia gulosa.
         }
 
-  return vmin;
+  return vmin; //retorna o vértice com menor distância
 }
 
-int dijkstra(int ** grf, int n, int s, int v_f) {
+int dijkstra(int ** grf, int n, int s, int v_f) { 
+  //grf = matriz 
+  //n = Número de vértices
+  //s = inicio -> home
+  //v_f = final -> school
 int * dist = (int *) malloc(sizeof(int)*n);
 int * q = (int *) malloc(sizeof(int)*n);
 int alt,v,u, qsize = n;
@@ -52,42 +58,53 @@ if(q == NULL || dist == NULL)
 if(n <= 0)
   return 0;
 
+//se o inicio for menor que 0, ou se inicio for maior que n-1 ou fim for menor que 0 ou maior que n-1
 if((s < 0 || s > n-1) || (v_f < 0 || v_f > n-1))
   return 0;
 
+//aqui a distancia do inicio é 0, pois é o primeiro vértice
 dist[s] = 0;
 
+//é necessário atribuir a distancia para cada vertice v
 for(v=0; v < n; ++v)
   {
-    if(s != v)
-      dist[v] = INT_MAX;
-    q[v] = v;
+    if(s != v) //se o s (inicio) é diferente do vertice v
+      dist[v] = INT_MAX; // distancia do vertice v receberá infinito (momento incial)
+    q[v] = v;//conjunto q de vertices receberá o vertice atual do laço
   }
 
 
 
-while(qsize > 0) {
-  for(v=0; v < n; ++v)
+while(qsize > 0) { // qsize é o n ou o número de vértices, enquanto ainda houver vértices a serem visitados
+  for(v=0; v < n; ++v) // Esse for irá percorrer vértice por vértice
     {
-      if(pertence(q,qsize,v))
-        printf("dist[%d] = %d ", v, dist[v]);
+      if(pertence(q,qsize,v)) // Esse if faz uma chamada para função pertence passando o conjunto 
+                              //de vértices, o número de vértices e o vértice que esá sendo analisado.
+                              //
+        printf("dist[%d] = %d ", v, dist[v]); // se pertencer irá imprimir a distância do vértice
+                                              // na primeira vez apenas o home terá distância 0, os outros
+                                              // terão distância infinita
     }
-  printf("\nqsize = %d\n", qsize);
+
+  printf("\nqsize = %d\n", qsize); // o número de vértices
   printf("Digite um caracter para continuar...");
   getchar();
-  v = min_vertice_dist(dist, q, qsize);
-  qsize = remove_vertice(q,qsize,v);
-  printf("v = %d; qsize = %d\n", v,qsize);
+  v = min_vertice_dist(dist, q, qsize); // atribui a v o vértice com menor distância
+  qsize = remove_vertice(q,qsize,v); // subtrai o vértice com a menor distância do tamanho de vértices
+  printf("v = %d; qsize = %d\n", v,qsize); // imprime o vértice com menor distância e o tamnho de vértices
+  
+  //Imprime os vértices restantes após cada while
   for(int i = 0; i < qsize; ++i)
     printf("q[%d] = %d ", i, q[i]);
   printf("\n");
 
+
   for(u = 0; u < n; ++u) {
-    if(grf[v][u] != INT_MAX) {
-    alt = dist[v]+grf[v][u];
-    printf("dist[%d] = %d; grf[%d][%d] = %d; alt = %d\n",v,dist[v], v,u, grf[v][u], alt);
-    if (alt < dist[u])
-        dist[u] = alt;
+    if(grf[v][u] != INT_MAX) { //se a distancia entre os vértices v e u forem diferentes de infinito
+    alt = dist[v]+grf[v][u]; // alt recebe a distnacia do vértice + a distância entre os vértices v e u
+    printf("dist[%d] = %d; grf[%d][%d] = %d; alt = %d\n",v,dist[v], v,u, grf[v][u], alt); 
+    if (alt < dist[u]) // se alt form menor que distancia do vértice u
+        dist[u] = alt; // distância de u recebe alt
     printf("dist[%d] = %d;\n",u,dist[u]);
     }
  }
@@ -97,17 +114,18 @@ return dist[v_f];
 }
 
 int main() {
-int ** grf_dist;
-int i, j, ini, fim, n = 8;
+int ** grf_dist; //cria um ponteiro para um array de ponteiros
+int i, j, ini, fim, n = 8; //variáveis para os laços, inicio e fim e o tamanho de vértices (0(home) a 7(school))
 
-grf_dist = (int **) malloc(n*sizeof(int *));
+grf_dist = (int **) malloc(n*sizeof(int *)); // aloca espaço em memória para grf_dist
 for(i = 0; i < n; ++i) {
-  grf_dist[i] = (int *) malloc(n*sizeof(int));
+  grf_dist[i] = (int *) malloc(n*sizeof(int)); // aloca espaço para os 8 vértices do vetor
 }
 
 for(i = 0; i < n; ++i)
   for(j = 0; j < n; ++j)
-    grf_dist[i][j] = INT_MAX;
+    grf_dist[i][j] = INT_MAX; // Esses for aninhados preenchem todos vértices com infinito.
+                              // Abaixo são atribuídos os custos para cada caminho entre os vértices.
 
 // grf_dist[0][1] = 6;
 // grf_dist[0][2] = 8;
@@ -144,7 +162,7 @@ grf_dist[5][7] = 4; // E -> School
 //       printf("grf_dist[%d][%d] = %d ", i, j, grf_dist[i][j]);
 //     printf("\n");
 //    }
-ini = 0; fim = 7;
+ini = 0; fim = 7; //Aqui começa em Home (0) e termina em Fim (7)
 printf("Distância menor de %d a %d: %d\n", ini, fim, dijkstra(grf_dist,n,ini,fim));
 // ini = 0; fim = 5;
 // printf("Distância menor de %d a %d: %d\n", ini, fim, dijkstra(grf_dist,n,ini,fim));
