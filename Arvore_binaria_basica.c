@@ -34,18 +34,19 @@ PONT criarNovoNo(TIPOCHAVE ch){
 
 void criarRaiz(PONT* raiz, TIPOCHAVE chave){
     *raiz = criarNovoNo(chave);
-    printf(*raiz);
+    printf("Endereco: %d \n",*raiz);
+    printf("Chave: %d \n", (*raiz)->chave);
 }
 
-bool inserirFilho(PONT raiz, TIPOCHAVE novaChave, TIPOCHAVE chavePai, LADO lado){
-    PONT pai = buscarChave(chavePai,raiz);
+bool inserirFilho(PONT* raiz, TIPOCHAVE novaChave, TIPOCHAVE chavePai, LADO lado){
+    PONT pai = buscarChave(chavePai, *raiz);
     if (!pai) return false;
     PONT novo = criarNovoNo(novaChave);
     if(lado == esquerdo){
         novo->esq = pai->esq;
         pai->esq = novo;
     } else{
-        novo->esq = pai->dir;
+        novo->dir = pai->dir;
         pai->dir = novo;
     }
     return true;
@@ -53,9 +54,11 @@ bool inserirFilho(PONT raiz, TIPOCHAVE novaChave, TIPOCHAVE chavePai, LADO lado)
 
 int main(){
 
-    PONT raiz; 
+    PONT raiz = NULL; 
     
-   criarRaiz(raiz,43);
+   criarRaiz(&raiz,43);
+   printf("%d", raiz);
+   inserirFilho(&raiz, 25, 43, esquerdo);
 
     return 0;
 };
