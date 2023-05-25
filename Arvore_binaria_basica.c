@@ -34,8 +34,8 @@ PONT criarNovoNo(TIPOCHAVE ch){
 
 void criarRaiz(PONT* raiz, TIPOCHAVE chave){
     *raiz = criarNovoNo(chave);
-    printf("Endereco: %d \n",*raiz);
-    printf("Chave: %d \n", (*raiz)->chave);
+    // printf("Endereco: %d \n",*raiz);
+    // printf("Chave: %d \n", (*raiz)->chave);
 }
 
 bool inserirFilho(PONT* raiz, TIPOCHAVE novaChave, TIPOCHAVE chavePai, LADO lado){
@@ -52,13 +52,26 @@ bool inserirFilho(PONT* raiz, TIPOCHAVE novaChave, TIPOCHAVE chavePai, LADO lado
     return true;
 }
 
+void imprimirArvore(PONT raiz) {
+    if (raiz != NULL) {
+        imprimirArvore(raiz->esq);
+        printf("%d ", raiz->chave);
+        imprimirArvore(raiz->dir);
+    }
+}
+
 int main(){
 
     PONT raiz = NULL; 
     
    criarRaiz(&raiz,43);
-   printf("%d", raiz);
    inserirFilho(&raiz, 25, 43, esquerdo);
+   inserirFilho(&raiz, 50, 43, direito);
+   inserirFilho(&raiz, 20, 43, esquerdo);
+   inserirFilho(&raiz, 27, 43, esquerdo);
+   inserirFilho(&raiz, 42, 43, direito);
+
+   imprimirArvore(raiz);
 
     return 0;
 };
