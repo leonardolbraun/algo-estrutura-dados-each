@@ -16,6 +16,10 @@ typedef struct aux
 
 typedef NO* PONT;
 
+PONT inicializa(){
+    return(NULL);
+}
+
 PONT buscarChave(TIPOCHAVE ch, PONT raiz){
     if (raiz == NULL) return NULL;
     if (raiz->chave == ch) return raiz;
@@ -50,6 +54,18 @@ bool inserirFilho(PONT* raiz, TIPOCHAVE novaChave, TIPOCHAVE chavePai, LADO lado
         pai->dir = novo;
     }
     return true;
+}
+
+PONT adiciona(PONT raiz, PONT no){
+    if (raiz == NULL) return(no);
+    if (no->chave < raiz->chave)
+    {
+        raiz->esq = adiciona(raiz->esq, no);
+    } else {
+        raiz->dir = adiciona(raiz->dir, no);
+    }
+    return(raiz);
+    
 }
 
 int alturaArvore(PONT raiz) {
@@ -117,14 +133,40 @@ void imprimirArvoreVisual(PONT raiz, int espaco) {
 
 int main(){
 
-    PONT raiz = NULL; 
+    PONT raiz = inicializa(); 
     
-    criarRaiz(&raiz,43);
-    inserirFilho(&raiz, 25, 43, esquerdo);
-    inserirFilho(&raiz, 50, 43, direito);
-    inserirFilho(&raiz, 20, 43, esquerdo);
-    inserirFilho(&raiz, 27, 43, esquerdo);
-    inserirFilho(&raiz, 42, 43, direito);
+    //criarRaiz(&raiz,43);
+    // inserirFilho(&raiz, 25, 43, esquerdo);
+    // inserirFilho(&raiz, 50, 43, direito);
+    // inserirFilho(&raiz, 20, 43, esquerdo);
+    // inserirFilho(&raiz, 27, 43, esquerdo);
+    // inserirFilho(&raiz, 42, 43, direito);
+
+    PONT no = criarNovoNo(43);
+    raiz = adiciona(raiz, no);
+    
+    no = criarNovoNo(50);
+    raiz = adiciona(raiz, no);
+    
+    no = criarNovoNo(20);
+    raiz = adiciona(raiz, no);
+    
+    no = criarNovoNo(27);
+    raiz = adiciona(raiz, no);
+    
+    no = criarNovoNo(42);
+    raiz = adiciona(raiz, no);
+
+    no = criarNovoNo(28);
+    raiz = adiciona(raiz, no);
+
+    no = criarNovoNo(41);
+    raiz = adiciona(raiz, no);
+
+    no = criarNovoNo(26);
+    raiz = adiciona(raiz, no);
+
+
 
     imprimirArvore(raiz);
     printf("\n");
