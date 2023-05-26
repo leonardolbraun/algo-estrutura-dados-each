@@ -131,6 +131,23 @@ void imprimirArvoreVisual(PONT raiz, int espaco) {
     imprimirArvoreVisual(raiz->esq, espaco);
 }
 
+int numeroNos(PONT raiz){
+    if (!raiz) return 0;
+    return(numeroNos(raiz->esq) + 1 + numeroNos(raiz->dir)); 
+}
+
+void exibirArvore(PONT raiz){
+    if (raiz != NULL)
+    {
+        printf("%i",raiz->chave);
+        printf("(");
+        exibirArvore(raiz->esq);
+        exibirArvore(raiz->dir);
+        printf(")");
+    }
+    
+}
+
 int main(){
 
     PONT raiz = inicializa(); 
@@ -172,6 +189,12 @@ int main(){
     printf("\n");
 
     printf("Altura da arvore: %d\n", alturaArvore(raiz));
+
+    printf("Numero de nos: %d\n", numeroNos(raiz));
+
+    printf("Exibicao da arvore: ");
+    exibirArvore(raiz);
+    printf("\n");
 
     int nivelDesejado = 2;
     printf("Nodos no nivel %d: ", nivelDesejado);
