@@ -91,23 +91,23 @@ double encontrarSubsequenciaMaximaSemArray(double *arr, int size) {
 }
 
 int main() {
-    double arrayA[] = {2, -3, 1.5, -1, 3, -2, -3, -3, 8};
+    double arrayA[] = {2, -3, 1.5, -1, 3, -2, -3, -3};
     double arrayB[] = {2, -3, 5, -1, 3, -2, 13, 3};
     double arrayC[] = {-2, -3, 5, -1, -3, 2, -3, -3};
 
     double globalMaximo, sufixoMaximo;
-    double subsequenciaMaximaArray[9], sufixoMaxArray[9];
+    double subsequenciaMaximaArray[8], sufixoMaxArray[8];
     int tamanhoSubsequenciaMaxima, tamanhoSufixoMax;
 
     printf("Vetor: [");
-    for (int i = 0; i < 9; ++i) {
+    for (int i = 0; i < 8; ++i) {
         printf("%3.2f ", arrayA[i]);
     }
     printf("]\n");
 
-    printf("Global máximo (Sem Array): %3.2f\n", encontrarSubsequenciaMaximaSemArray(arrayA, 9));
+    printf("Global máximo (Sem Array): %3.2f\n", encontrarSubsequenciaMaximaSemArray(arrayA, 8));
 
-    globalMaximo = encontrarSubsequenciaMaxima(arrayA, 9, sufixoMaxArray, &tamanhoSufixoMax,
+    globalMaximo = encontrarSubsequenciaMaxima(arrayA, 8, sufixoMaxArray, &tamanhoSufixoMax,
                                                subsequenciaMaximaArray, &tamanhoSubsequenciaMaxima);
 
     printf("Subsequência Máxima:\n");
