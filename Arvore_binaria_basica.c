@@ -148,6 +148,55 @@ void exibirArvore(PONT raiz){
     
 }
 
+PONT buscaNo(PONT raiz, TIPOCHAVE ch, PONT *pai){
+    PONT atual = raiz;
+    *pai = NULL;
+    while (atual)
+    {
+        if(atual->chave == ch) return(atual);
+        *pai = atual;
+        if(ch < atual->chave) atual = atual->esq;
+        else atual = atual->dir;
+    }
+
+    return(NULL);
+    
+}
+
+PONT removeNo(PONT raiz, TIPOCHAVE ch){
+    PONT pai, no, p, q;
+    no = buscaNo(raiz,ch,&pai);
+    if(no==NULL) return raiz;
+    if(!no->esq || !no->dir){
+        if(!no->esq) q = no->dir;
+        else q = no->esq;
+    }
+    else {
+        p = no;
+        q = no->esq;
+        while (q->dir)
+        {
+            p = q;
+            q = q->dir;
+        }
+        if (p != no)
+        {
+            p->dir = q->esq;
+            q->esq = no->esq;
+        }
+        q->dir = no->dir;
+    }
+    if (!pai){
+        free(no);
+        return(q);
+    }
+    if(ch < pai->chave) pai->esq = q;
+    else pai->dir = q;
+    free(no);
+    return(raiz);
+}
+
+
 int main(){
 
     PONT raiz = inicializa(); 
@@ -204,6 +253,12 @@ int main(){
     imprimirProfundidade(raiz, 0);
     printf("\n");
 
+    imprimirArvoreVisual(raiz, 0);
+
+
+    removeNo(raiz, 26);
+    printf("Exibicao da arvore: ");
+    exibirArvore(raiz);
     imprimirArvoreVisual(raiz, 0);
 
     return 0;
